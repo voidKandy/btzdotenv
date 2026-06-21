@@ -8,7 +8,7 @@ pub fn loadDotEnv(run: *std.Build.Step.Run) void {
     var arena_state = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     defer arena_state.deinit();
     const arena = arena_state.allocator();
-    var threaded: std.Io.Threaded = .init(b.allocator, .{});
+    var threaded: std.Io.Threaded = .init(arena, .{});
     defer threaded.deinit();
     const io = threaded.io();
 
