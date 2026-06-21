@@ -32,7 +32,7 @@ pub fn loadDotEnv(run: *std.Build.Step.Run) void {
     defer env_file.close(io);
 
     const read_buffer = arena.alloc(u8, 2048) catch @panic("out of memory");
-    var reader = env_file.reader(read_buffer);
+    var reader = env_file.reader(io,read_buffer);
 
     const contents = reader.interface.allocRemaining(arena, .unlimited) catch @panic("failed to read");
 
