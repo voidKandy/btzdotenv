@@ -8,7 +8,12 @@ pub fn loadDotEnv(run: *std.Build.Step.Run) void {
     var arena_state = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     defer arena_state.deinit();
     const arena = arena_state.allocator();
-    var env_file = std.fs.cwd().openFile(".env", .{}) catch |e| {
+    var threaded: std.Io.Threaded = .init(b.allocator, .{});
+    defer threaded.deinit();
+    const io = threaded.io();
+
+
+    var env_file = std.Io.Dir.cwd().openFile(io, ".env", .{}) catch |e| {
         switch (e) {
             error.FileNotFound => {
                 log.info(
@@ -24,7 +29,7 @@ pub fn loadDotEnv(run: *std.Build.Step.Run) void {
         return;
     };
 
-    defer env_file.close();
+    defer env_file.close(io);
 
     const read_buffer = arena.alloc(u8, 2048) catch @panic("out of memory");
     var reader = env_file.reader(read_buffer);
