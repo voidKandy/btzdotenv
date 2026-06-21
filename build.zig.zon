@@ -2,6 +2,7 @@
     .name = .btzdotenv,
     .version = "1.0.0",
     .minimum_zig_version = "0.15.1",
+    .fingerprint = 0x94c0ac7337f11778,
     .dependencies = .{},
     .paths = .{
         "build.zig",
